@@ -20,9 +20,6 @@ app.use("/api/user", userRoutes); //login and signup routes
 app.use("/api/chat", chatRoutes); //one to one and group chat CRUDs
 app.use("/api/message", messageRoutes); //SocketIO message routes
 
-app.use(notfound);
-app.use(errorhandler);
-
 // -----------------Deployment Codes----------------
 const __dirname1 = path.resolve();
 if ( process.env.NODE_ENV === 'production') {
@@ -40,6 +37,9 @@ if ( process.env.NODE_ENV === 'production') {
 }
 
 // ----------------Deployment Codes------------------
+
+app.use(notfound);
+app.use(errorhandler);
 
 // server running port
 const PORT = process.env.PORT || 5000;
