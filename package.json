@@ -4,17 +4,16 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "build": "cd react_frontend && npm run build",
-    "install-client":"cd react_frontend && npm install",
-    "heroku-postbuild":"npm run install-client && npm run build"
-
-   },
+    "server": "node backend/server.js",
+    "develop": "concurrently --kill-others-on-fail \"npm run server\"",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" "
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
+    "concurrently": "^7.1.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-async-handler": "^1.2.0",
