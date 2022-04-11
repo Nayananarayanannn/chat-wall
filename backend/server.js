@@ -22,8 +22,9 @@ app.use("/api/message", messageRoutes); //SocketIO message routes
 
 // -----------------Deployment Codes----------------
 const __dirname1 = path.resolve();
+console.log(path.join(__dirname, "../react_frontend/build"));
 if ( process.env.NODE_ENV === 'production') {
-  console.log(path.join(__dirname1, "/react_frontend/build"));
+  console.log(path.join(__dirname, "../react_frontend/build"));
   app.use(express.static(path.join(__dirname1, "/react_frontend/build"))); //set build forlder
 
   // get index page whenever app runs
