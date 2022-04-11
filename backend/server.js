@@ -15,10 +15,6 @@ const app = express();
 
 app.use(express.json()); //to accept JSON data
 
-app.get("/", (req, res) => {
-  res.send("API IS RUNNING");
-});
-
 // Routes
 app.use("/api/user", userRoutes); //login and signup routes
 app.use("/api/chat", chatRoutes); //one to one and group chat CRUDs
