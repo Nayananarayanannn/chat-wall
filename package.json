@@ -4,7 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "start": "node backend/server.js",
+    "build": "cd react_frontend && npm run build",
+    "install-client":"cd react_frontend && npm install",
+    "heroku-postbuild":"npm run install-client && npm run build"
+
    },
   "author": "",
   "license": "ISC",
