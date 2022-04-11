@@ -20,7 +20,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
 import ProfileModal from "./ProfileModal";
@@ -45,6 +45,65 @@ function SideDrawer() {
 
   // drawer
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // post all notifications into db
+  const notify = () => {
+    var data = JSON.stringify({
+      notification: notification,
+    });
+
+    var config = {
+      method: "post",
+      url: "/api/message/notification",
+      headers: {
+        Authorization:`Bearer ${user.token}`,
+          "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log('notified')
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  // fetch all notifications from db
+  const fetchNotify = () => {
+    var config = {
+      method: "get",
+      url: "/api/message",
+      headers: {
+        Authorization:`Bearer ${user.token}`
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        let newNots = (response.data[0].notification);
+        if(newNots.length !== 0){
+          setNotification(newNots)
+        }
+        
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  // fetch all notifications from DB whenever the app reloads
+    useEffect(() => {
+      fetchNotify();
+    }, []);
+
+  // post notifications whenever notification array gets updated
+  useEffect(()=>{
+    notify();
+  },[notification]);
+
+
 
   // logout functionality
   const logoutHandler = () => {
@@ -186,11 +245,11 @@ function SideDrawer() {
                     setNotification(notification.filter((n) => n !== notify));
                   }}
                 >
-                  {notify.chat.isGroupChat
+                  {notify.chat?.isGroupChat
                     ? `New message in ${notify.chat.chatName}`
                     : `New message from ${getSenderName(
                         user,
-                        notify.chat.users
+                        notify.chat?.users
                       )}`}
                 </MenuItem>
               ))}

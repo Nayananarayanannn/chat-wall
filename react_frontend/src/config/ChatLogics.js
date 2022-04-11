@@ -17,7 +17,7 @@ export const getSender = (loggedUser, users) => {
 };
 
 export const getSenderName = (loggedUser, users) => {
-  return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
+  return users[0]?._id === loggedUser._id ? users[1]?.name : users[0]?.name;
 
 };
 
@@ -44,6 +44,7 @@ export const isLastMessage = (message, i, userId) => {
   );
 };
 
+// setting margins of messages
 export const isSameSenderMargin = (message, m, i, userId) => {
   // second last message send by not logged in user
   if (
@@ -64,6 +65,14 @@ export const isSameSenderMargin = (message, m, i, userId) => {
 
 }
 
+// message send by same user again
 export const isSameUser = (message,m,i) => {
   return i > 0 && message[i - 1].sender._id === m.sender._id;//message is not first message and previous message is also send by same user
 };
+
+// filter notifications when chat is opened
+export const arrayRemove = (arr, value) => {
+    return arr.filter(function (ele) {
+      return ele != value;
+    });
+  }

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getSender, getSenderFull } from "../config/ChatLogics";
+import { arrayRemove, getSender, getSenderFull } from "../config/ChatLogics";
 import { ChatState } from "../Context/ChatProvider";
 import ProfileModal from "./miscellanious/ProfileModal";
 import UpdateGroupChatModal from "./miscellanious/UpdateGroupChatModal";
@@ -19,7 +19,8 @@ import { useLottie } from "lottie-react";
 import gif from "../animations/86723-typing-animation.gif";
 import io from "socket.io-client";
 
-const ENDPOINT = "http://localhost:5000";//endpoint uil(localhost 5000 before deploy)
+// const ENDPOINT = "http://localhost:5000";//endpoint url(localhost 5000 before deploy)
+const ENDPOINT = "https://mern-chat-wall.herokuapp.com/";//after deploy, provide heroku url
 var socket, selectedChatCompare;
 
 function SingleChat({ fetchAgain, setFetchAgain }) {
@@ -91,6 +92,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
     selectedChatCompare = selectedChat;//get a backup of selected chat to compare and emit message or send notification if not selected
   }, [selectedChat]);
 
+  // on message receving
   useEffect(() => {
     // on receiving message
     socket.on("message received", (newmessageReceived) => {
@@ -107,8 +109,22 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       else {
         setMessage([...message, newmessageReceived]);//add new chat to list of messages
       }
+
     });
   });
+
+  // update notification array whenever the chat is opened
+  useEffect(() => {
+    let sender;
+    selectedChat?.users[0]?._id === user._id ? (sender = selectedChat?.users[1]) : (sender = selectedChat?.users[0]);//finding sender of chat opened
+    notification.map((nots) => {
+      nots.sender?._id === sender._id//if sender of opened chat is equal to sender of notification message
+        ? setNotification(arrayRemove(notification,nots))//remove the notification
+        :(<></>)
+    }
+    );
+  },[selectedChat])
+
   // send messages
   const sendMessage = async (e) => {
     // send message on press enter
@@ -244,7 +260,6 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
             ) : (
               <div className="messages">
                 <ScrollableChat message={message} />
-                {console.log(message)}
               </div>
             )}
 
