@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ec3baf7f.css",
+    "main.js": "/static/js/main.8e6908ca.js",
+    "static/media/86723-typing-animation.gif": "/static/media/86723-typing-animation.ddefc07ce634fa145432.gif",
+    "index.html": "/index.html",
+    "main.ec3baf7f.css.map": "/static/css/main.ec3baf7f.css.map",
+    "main.8e6908ca.js.map": "/static/js/main.8e6908ca.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ec3baf7f.css",
+    "static/js/main.8e6908ca.js"
+  ]
+}
